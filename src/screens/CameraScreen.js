@@ -1,5 +1,12 @@
 import {useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Image,
+  StatusBar
+} from 'react-native';
 import {
   Camera,
   useCameraDevice,
@@ -52,6 +59,8 @@ const CameraScreen = ({route, navigation}) => {
 
   return (
     <View style={{flex: 1}}>
+      {/* Hide the status bar when camera is active */}
+      {isCameraView && <StatusBar hidden />}
       {isCameraView ? (
         <>
           <Camera
