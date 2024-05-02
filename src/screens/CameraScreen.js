@@ -5,17 +5,20 @@ import {
   TouchableOpacity,
   Text,
   Image,
-  StatusBar
+  StatusBar,
+  Button
 } from 'react-native';
 import {
   Camera,
   useCameraDevice,
   useCameraPermission
 } from 'react-native-vision-camera';
+import styles from './CameraScreen.styles';
+import OutlinedButton from '../components/UI/OutlinedButton';
+import {useFocusEffect} from '@react-navigation/native';
 
 const CameraScreen = ({route, navigation}) => {
   const [isCameraView, setIsCameraView] = useState(false);
-  //  const {isCameraView, setIsCameraView} = useState(false);
   const [imageData, setImageData] = useState('');
   const cameraRef = useRef(null);
 
@@ -26,7 +29,10 @@ const CameraScreen = ({route, navigation}) => {
     if (!hasPermission) {
       requestPermission();
     }
-    setIsCameraView(true);
+    if (hasPermission && !imageData) {
+      setIsCameraView(true);
+    }
+    // openCamera
   };
   console.log('--isCamerView---', isCameraView);
 
@@ -36,83 +42,68 @@ const CameraScreen = ({route, navigation}) => {
         quality: 0.5 // Adjust the quality as needed
       });
       setImageData(photo.path);
-      console.log('Photo captured:', photo);
+      console.log('---Photo captured:----', photo);
     }
     setIsCameraView(false);
   };
 
-  if (!device) return <ActivityIndicator />;
-
   useEffect(() => {
-    if (!hasPermission) {
-      requestPermission();
-    }
-    setIsCameraView(true);
-    // openCamera();
+    // if (!hasPermission) {
+    //   requestPermission();
+    // }
+    // if (hasPermission) {
+    //   setIsCameraView(true);
+    // }
+    openCamera();
   }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: !isCameraView // Hide the header for CameraScreen
+      //  headerLeft: () => null
     });
   }, [navigation, isCameraView]);
 
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('beforeRemove', e => {
+  //     if (imageData) {
+  //       console.log('----camera imagedata----', imageData);
+  //       navigation.setParams({imageData});
+  //     }
+  //   });
+
+  //   return unsubscribe;
+  // }, [imageData, navigation]);
+
+  if (!device) return <ActivityIndicator />;
+
   return (
     <View style={{flex: 1}}>
-      {/* Hide the status bar when camera is active */}
       {isCameraView && <StatusBar hidden />}
       {isCameraView ? (
         <>
           <Camera
             style={[StyleSheet.absoluteFill, {flex: 1}]}
-            // style={{flex: 1}}
             device={device}
             isActive={true}
             ref={cameraRef}
             photo={true}
           />
 
-          <TouchableOpacity
-            onPress={takePicture}
-            style={{
-              position: 'absolute',
-              bottom: 20,
-              alignSelf: 'center',
-              backgroundColor: 'red',
-              borderRadius: 50,
-              height: 50,
-              width: 50,
-              alignItems: 'center',
-              justifyContent: 'center',
-              zIndex: 1,
-              padding: 8
-            }}>
-            <Text
-              style={{
-                color: 'black'
-              }}>
-              Click
-            </Text>
+          <TouchableOpacity onPress={takePicture} style={styles.click}>
+            <Text style={styles.text}>Click</Text>
           </TouchableOpacity>
         </>
       ) : (
-        <View
-          style={{
-            flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}>
-          {imageData !== '' && (
-            <Image
-              source={{uri: 'file://' + imageData}}
-              style={{width: '80%', height: '60%', marginBottom: 8}}
-            />
+        <View style={styles.buttonContainer}>
+          {imageData !== '' ? (
+            <Image source={{uri: 'file://' + imageData}} style={styles.image} />
+          ) : (
+            <Text style={styles.imagePreview}>No image taken yet.</Text>
           )}
-          <TouchableOpacity
-            onPress={openCamera}
-            style={{backgroundColor: 'white', padding: 15, borderRadius: 10}}>
-            <Text style={{color: 'black'}}>Take Picture</Text>
-          </TouchableOpacity>
+          <View style={styles.button}>
+            <Button title="Take Image" onPress={openCamera}></Button>
+          </View>
         </View>
       )}
     </View>

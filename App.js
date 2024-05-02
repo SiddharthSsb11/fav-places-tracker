@@ -46,7 +46,8 @@ const App = () => {
             name="Camera"
             component={CameraScreen}
             options={{
-              title: 'Camera Screen'
+              title: 'Camera Screen',
+              headerLeft: () => null
             }}
           />
         </Stack.Navigator>

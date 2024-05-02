@@ -1,20 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/colors';
-
+import {Colors} from '../constants/colors';
 const styles = StyleSheet.create({
-  imagePreview: {
-    width: '100%',
-    height: 200,
-    marginVertical: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.primary100,
-    borderRadius: 4
-  },
-  image: {
-    width: '100%',
-    height: '100%'
-  },
   click: {
     position: 'absolute',
     bottom: 20,
@@ -40,13 +26,23 @@ const styles = StyleSheet.create({
   button: {
     width: '85%',
     marginTop: 8
+  },
+  image: {
+    width: '85%',
+    height: '70%',
+    marginBottom: 16,
+    borderRadius: 4
+  },
+
+  imagePreview: {
+    width: '100%',
+    height: 200,
+    marginVertical: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.primary100,
+    borderRadius: 4
   }
-  // image: {
-  //   width: '85%',
-  //   height: '70%',
-  //   marginBottom: 16,
-  //   borderRadius: 4
-  // }
 });
 
 export default styles;

@@ -1,14 +1,18 @@
-import {useEffect, useState} from 'react';
-import {View, Text, ScrollView, TextInput} from 'react-native';
+import {useState} from 'react';
+import {View, Text, ScrollView, TextInput, Button} from 'react-native';
 import styles from './PlaceForm.styles';
+import {useNavigation} from '@react-navigation/native';
+import OutlinedButton from '../UI/OutlinedButton';
 import ImagePicker from './ImagePicker';
+import LocationPicker from './LocationPicker';
+import {useRoute} from '@react-navigation/native';
+import {useEffect} from 'react';
 
 const PlaceForm = () => {
   const [enteredTitle, setEnteredTitle] = useState('');
-  const [absoluteFill, setAbsoluteFill] = useState(false);
+  const route = useRoute();
 
   const onChangeTextHandler = enteredText => {
-    console.log(enteredText);
     setEnteredTitle(enteredText);
   };
 
@@ -23,6 +27,7 @@ const PlaceForm = () => {
         />
       </View>
       <ImagePicker />
+      <LocationPicker />
     </ScrollView>
   );
 };
