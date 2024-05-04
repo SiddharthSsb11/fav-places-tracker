@@ -14,8 +14,6 @@ import {
   useCameraPermission
 } from 'react-native-vision-camera';
 import styles from './CameraScreen.styles';
-import OutlinedButton from '../components/UI/OutlinedButton';
-import {useFocusEffect} from '@react-navigation/native';
 
 const CameraScreen = ({route, navigation}) => {
   const [isCameraView, setIsCameraView] = useState(false);
@@ -29,31 +27,22 @@ const CameraScreen = ({route, navigation}) => {
     if (!hasPermission) {
       requestPermission();
     }
-    if (hasPermission && !imageData) {
+    if (hasPermission) {
       setIsCameraView(true);
     }
-    // openCamera
   };
-  console.log('--isCamerView---', isCameraView);
 
   const takePicture = async () => {
     if (cameraRef.current && isCameraView) {
       const photo = await cameraRef.current.takePhoto({
-        quality: 0.5 // Adjust the quality as needed
+        quality: 0.5
       });
       setImageData(photo.path);
-      console.log('---Photo captured:----', photo);
     }
     setIsCameraView(false);
   };
 
   useEffect(() => {
-    // if (!hasPermission) {
-    //   requestPermission();
-    // }
-    // if (hasPermission) {
-    //   setIsCameraView(true);
-    // }
     openCamera();
   }, []);
 

@@ -1,5 +1,5 @@
 import {Pressable, StyleSheet, Text} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Entypo';
 import {Colors} from '../../constants/colors';
 
 function OutlinedButton({onPress, icon, children}) {
@@ -22,20 +22,22 @@ export default OutlinedButton;
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
     paddingVertical: 6,
     margin: 4,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: Colors.primary500
+    borderColor: Colors.primary500,
+    // width: '100%',
+    borderRadius: 4
   },
   pressed: {
     opacity: 0.7
   },
   icon: {
-    marginRight: 6
+    marginRight: 8
   },
   text: {
     color: Colors.primary500
