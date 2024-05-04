@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import AllPlaces from './src/screens/AllPlaces';
 import AddPlace from './src/screens/AddPlace';
 import CameraScreen from './src/screens/CameraScreen';
+import Map from './src/screens/Map';
 import {Colors} from './src/constants/colors';
 
 const Stack = createNativeStackNavigator();
@@ -50,6 +51,7 @@ const App = () => {
               headerLeft: () => null
             }}
           />
+          <Stack.Screen name="Map" component={Map} />
         </Stack.Navigator>
       </NavigationContainer>
     </>

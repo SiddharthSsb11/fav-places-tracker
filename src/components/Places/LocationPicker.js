@@ -1,14 +1,17 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 
 import {View, Alert, PermissionsAndroid, Text, Image} from 'react-native';
 import OutlinedButton from '../UI/OutlinedButton';
 import styles from './LocationPicker.styles';
 import Geolocation from 'react-native-geolocation-service';
-
+import {useNavigation, useRoute, useIsFocused} from '@react-navigation/native';
 import {getMapPreview} from '../../util/location';
 
 const LocationPicker = () => {
   const [pickedLocation, setPickedLocation] = useState();
+  const isFocused = useIsFocused();
+  const navigation = useNavigation();
+  const route = useRoute();
 
   const verifyPermission = async () => {
     try {
@@ -62,7 +65,19 @@ const LocationPicker = () => {
     );
   };
 
-  const pickOnMapHandler = () => {};
+  useEffect(() => {
+    if (isFocused && route.params?.pickedLat && route.params?.pickedLng) {
+      const mapPickedLocation = {
+        lat: route.params.pickedLat,
+        lng: route.params.pickedLng
+      };
+      setPickedLocation(mapPickedLocation);
+    }
+  }, [route, isFocused]);
+
+  const pickOnMapHandler = () => {
+    navigation.navigate('Map');
+  };
 
   let locationPreview = <Text>No location picked yet.</Text>;
 
@@ -71,7 +86,7 @@ const LocationPicker = () => {
       <Image
         style={styles.image}
         source={{
-          uri: getMapPreview(pickedLocation.lat, pickedLocation.lng)
+          uri: getMapPreview(pickedLocation.lat, pickedLocation.lng) // pickedLocation.lat || defaultconst, pickedLocation.lng
         }}
       />
     );

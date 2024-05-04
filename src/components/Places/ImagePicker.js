@@ -1,10 +1,23 @@
-import {Text, View} from 'react-native';
+import {useEffect, useState} from 'react';
+import {Image, Text, View} from 'react-native';
 import OutlinedButton from '../UI/OutlinedButton';
 
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute, useIsFocused} from '@react-navigation/native';
 import styles from './ImagePicker.styles';
+
 const ImagePicker = () => {
+  const [pickedImage, setPickedImage] = useState();
+
+  const isFocused = useIsFocused();
   const navigation = useNavigation();
+  const route = useRoute();
+
+  useEffect(() => {
+    if (isFocused && route.params?.imageData) {
+      const pickedImageData = route.params.imageData;
+      setPickedImage(pickedImageData);
+    }
+  }, [route, isFocused]);
 
   const openCamera = () => {
     navigation.navigate('Camera');
@@ -12,9 +25,11 @@ const ImagePicker = () => {
 
   let imagePreview = <Text>No image taken yet.</Text>;
 
-  // if (pickedImage) {
-  //   imagePreview = <Image style={styles.image} source={{ uri: pickedImage }} />;
-  // }
+  if (pickedImage) {
+    imagePreview = (
+      <Image style={styles.image} source={{uri: 'file://' + pickedImage}} />
+    );
+  }
 
   return (
     <View>
