@@ -6,7 +6,7 @@ import AddPlace from './src/screens/AddPlace';
 import CameraScreen from './src/screens/CameraScreen';
 import Map from './src/screens/Map';
 import {Colors} from './src/constants/colors';
-
+import PlaceDetails from './src/screens/PlaceDetails';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -52,6 +52,13 @@ const App = () => {
             }}
           />
           <Stack.Screen name="Map" component={Map} />
+          <Stack.Screen
+            name="PlaceDetails"
+            component={PlaceDetails}
+            options={{
+              title: 'Loading Place...'
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>
