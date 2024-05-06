@@ -5,7 +5,7 @@ import OutlinedButton from '../UI/OutlinedButton';
 import {useNavigation, useRoute, useIsFocused} from '@react-navigation/native';
 import styles from './ImagePicker.styles';
 
-const ImagePicker = () => {
+const ImagePicker = ({onTakeImage}) => {
   const [pickedImage, setPickedImage] = useState();
 
   const isFocused = useIsFocused();
@@ -16,6 +16,7 @@ const ImagePicker = () => {
     if (isFocused && route.params?.imageData) {
       const pickedImageData = route.params.imageData;
       setPickedImage(pickedImageData);
+      onTakeImage(`file://${pickedImageData}`);
     }
   }, [route, isFocused]);
 

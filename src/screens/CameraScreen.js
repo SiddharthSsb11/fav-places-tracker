@@ -1,4 +1,4 @@
-import {useEffect, useLayoutEffect, useRef, useState} from 'react';
+import {useEffect, useLayoutEffect, useRef, useState, useCallback} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,7 +6,8 @@ import {
   Text,
   Image,
   StatusBar,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 import {
   Camera,
@@ -14,6 +15,7 @@ import {
   useCameraPermission
 } from 'react-native-vision-camera';
 import styles from './CameraScreen.styles';
+import IconButton from '../components/UI/IconButton';
 
 const CameraScreen = ({route, navigation}) => {
   const [isCameraView, setIsCameraView] = useState(false);
@@ -22,15 +24,6 @@ const CameraScreen = ({route, navigation}) => {
 
   const {hasPermission, requestPermission} = useCameraPermission();
   const device = useCameraDevice('back');
-
-  const openCamera = () => {
-    if (!hasPermission) {
-      requestPermission();
-    }
-    if (hasPermission) {
-      setIsCameraView(true);
-    }
-  };
 
   const takePicture = async () => {
     if (cameraRef.current && isCameraView) {
@@ -42,27 +35,46 @@ const CameraScreen = ({route, navigation}) => {
     setIsCameraView(false);
   };
 
+  const openCamera = () => {
+    if (!hasPermission) {
+      requestPermission();
+    }
+    if (hasPermission) {
+      setIsCameraView(true);
+    }
+  };
+
   useEffect(() => {
     openCamera();
   }, []);
 
+  const saveClickedImageHandler = useCallback(() => {
+    //avoiding function loop
+    if (!imageData) {
+      Alert.alert('No Image clicked!', 'You have to click an image first!');
+      return;
+    }
+
+    navigation.navigate('AddPlace', {
+      imageData: imageData
+      // merge: true, // Merge the current route params with the new ones
+    });
+  }, [navigation, imageData]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerShown: !isCameraView // Hide the header for CameraScreen
+      headerShown: !isCameraView, // Hide the header for CameraScreen
       //  headerLeft: () => null
+      headerRight: ({tintColor}) => (
+        <IconButton
+          icon="save"
+          size={24}
+          color={tintColor}
+          onPress={saveClickedImageHandler}
+        />
+      )
     });
-  }, [navigation, isCameraView]);
-
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('beforeRemove', e => {
-  //     if (imageData) {
-  //       console.log('----camera imagedata----', imageData);
-  //       navigation.setParams({imageData});
-  //     }
-  //   });
-
-  //   return unsubscribe;
-  // }, [imageData, navigation]);
+  }, [navigation, isCameraView, saveClickedImageHandler]);
 
   if (!device) return <ActivityIndicator />;
 

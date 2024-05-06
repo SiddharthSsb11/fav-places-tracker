@@ -7,19 +7,28 @@ import IconButton from '../components/UI/IconButton';
 import styles from './Map.styles';
 
 const Map = ({navigation, route}) => {
-  const [selectedLocation, setSelectedLocation] = useState();
+  const initialLocation = route.params && {
+    lat: route.params.initialLat,
+    lng: route.params.initialLng
+  };
+
+  const [selectedLocation, setSelectedLocation] = useState(initialLocation);
 
   const region = {
-    latitude: 28.634005967586805,
-    longitude: 77.21820519329377,
+    latitude: initialLocation ? initialLocation.lat : 37.78,
+    longitude: initialLocation ? initialLocation.lng : -122.43,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421
   };
 
   const selectLocationHandler = event => {
+    if (initialLocation) {
+      return;
+    }
+
     const lat = event.nativeEvent.coordinate.latitude;
     const lng = event.nativeEvent.coordinate.longitude;
-    console.log('--lat--', lat, '--lng--', lng);
+
     setSelectedLocation({lat: lat, lng: lng});
   };
 
@@ -41,6 +50,9 @@ const Map = ({navigation, route}) => {
   }, [navigation, selectedLocation]);
 
   useLayoutEffect(() => {
+    if (initialLocation) {
+      return;
+    }
     navigation.setOptions({
       headerRight: ({tintColor}) => (
         <IconButton
@@ -51,7 +63,7 @@ const Map = ({navigation, route}) => {
         />
       )
     });
-  }, [navigation, savePickedLocationHandler]);
+  }, [navigation, savePickedLocationHandler, initialLocation]);
 
   return (
     <MapView

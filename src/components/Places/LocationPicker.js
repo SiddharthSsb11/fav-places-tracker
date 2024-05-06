@@ -5,9 +5,9 @@ import OutlinedButton from '../UI/OutlinedButton';
 import styles from './LocationPicker.styles';
 import Geolocation from 'react-native-geolocation-service';
 import {useNavigation, useRoute, useIsFocused} from '@react-navigation/native';
-import {getMapPreview} from '../../util/location';
+import {getMapPreview, getAddress} from '../../util/location';
 
-const LocationPicker = () => {
+const LocationPicker = ({onPickLocation}) => {
   const [pickedLocation, setPickedLocation] = useState();
   const isFocused = useIsFocused();
   const navigation = useNavigation();
@@ -74,6 +74,20 @@ const LocationPicker = () => {
       setPickedLocation(mapPickedLocation);
     }
   }, [route, isFocused]);
+
+  useEffect(() => {
+    const handleLocation = async () => {
+      if (pickedLocation) {
+        const address = await getAddress(
+          pickedLocation.lat,
+          pickedLocation.lng
+        );
+        onPickLocation({...pickedLocation, address: address});
+      }
+    };
+
+    handleLocation();
+  }, [onPickLocation, pickedLocation]); //usecallback to onpicklocation handler in parent to avoid unnc=ecesary loop function
 
   const pickOnMapHandler = () => {
     navigation.navigate('Map');
