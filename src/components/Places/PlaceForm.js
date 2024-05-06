@@ -1,19 +1,32 @@
-import {useState} from 'react';
-import {View, Text, ScrollView, TextInput, Button} from 'react-native';
+import {useCallback, useState} from 'react';
+import {View, Text, ScrollView, TextInput} from 'react-native';
 import styles from './PlaceForm.styles';
-import {useNavigation} from '@react-navigation/native';
-import OutlinedButton from '../UI/OutlinedButton';
 import ImagePicker from './ImagePicker';
 import LocationPicker from './LocationPicker';
-import {useRoute} from '@react-navigation/native';
-import {useEffect} from 'react';
+import Button from '../UI/Button';
+import {Place} from '../../models/place';
 
-const PlaceForm = () => {
+const PlaceForm = ({onCreatePlace}) => {
   const [enteredTitle, setEnteredTitle] = useState('');
-  const route = useRoute();
+  const [selectedImage, setSelectedImage] = useState();
+  const [pickedLocation, setPickedLocation] = useState();
 
   const onChangeTextHandler = enteredText => {
     setEnteredTitle(enteredText);
+  };
+
+  const takeImageHandler = imageUri => {
+    setSelectedImage(imageUri);
+  };
+
+  const pickLocationHandler = useCallback(location => {
+    //usecallback to avoid fn pickedLocation recreated unnecesarily and avoid futher loop of useffct in locationpicker
+    setPickedLocation(location);
+  }, []);
+
+  const savePlaceHandler = () => {
+    const placeData = new Place(enteredTitle, selectedImage, pickedLocation);
+    onCreatePlace(placeData);
   };
 
   return (
@@ -26,8 +39,9 @@ const PlaceForm = () => {
           style={styles.input}
         />
       </View>
-      <ImagePicker />
-      <LocationPicker />
+      <ImagePicker onTakeImage={takeImageHandler} />
+      <LocationPicker onPickLocation={pickLocationHandler} />
+      <Button onPress={savePlaceHandler}>Submit</Button>
     </ScrollView>
   );
 };
