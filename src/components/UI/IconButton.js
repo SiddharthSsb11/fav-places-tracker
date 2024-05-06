@@ -1,13 +1,13 @@
 import {Pressable, StyleSheet, View} from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from 'react-native-vector-icons/Entypo';
 
-const IconButton = ({name, color, size, onPress}) => {
+const IconButton = ({icon, color, size, onPress}) => {
   return (
     <Pressable
       onPress={onPress}
       style={({pressed}) => pressed && styles.pressed}>
       <View style={styles.buttonContainer}>
-        <Icon name={name} color={color} size={size} />
+        <Icon name={icon} color={color} size={size} />
       </View>
     </Pressable>
   );
