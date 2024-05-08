@@ -15,8 +15,8 @@ const Map = ({navigation, route}) => {
   const [selectedLocation, setSelectedLocation] = useState(initialLocation);
 
   const region = {
-    latitude: initialLocation ? initialLocation.lat : 37.78,
-    longitude: initialLocation ? initialLocation.lng : -122.43,
+    latitude: initialLocation ? initialLocation.lat : 28.590442602701113,
+    longitude: initialLocation ? initialLocation.lng : 77.16544945398815,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421
   };
