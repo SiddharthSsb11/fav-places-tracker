@@ -1,4 +1,4 @@
-# Expense Manager
+# Places Tracker
 
 My Places is a React Native application that allows users to save their favorite places with titles, images, and addresses. Users can add new places using a form, which includes options to take a picture with the camera or choose an image from the device's gallery. Additionally, users can set the location of the place by selecting it on a map. 
 
@@ -12,8 +12,8 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 - **Location Services:** Access the user's current location and mark your desired favorite place location on a map.
 - **Nested Navigation**
 - Custom Pressable Button Component
-- FlatList for displaying your favorite places lists
-- Utilizes latest JavaScript and React features
+- FlatList for displaying the lists of your favorite places
+- Utilizes the latest JavaScript and React features
 - Styled with React Native StyleSheet
 - Implemented using React Hooks
 - Cross-platform code for Android and iOS
